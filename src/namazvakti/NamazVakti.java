@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -226,6 +227,8 @@ public class NamazVakti extends JFrame
            gizle();
        } catch (IOException ex) {
            Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (ParseException ex) {
+           Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
        }
    }
   });
@@ -285,7 +288,7 @@ public class NamazVakti extends JFrame
     frame_home.dispose();
 }
      
-     public void gizle() throws IOException{
+     public void gizle() throws IOException, ParseException{
        f = new JDialog();//taskbarda icon göstermemek için dialog
         ImageIcon imgicon = new ImageIcon(iconPath);
   f.getContentPane().setBackground(Color.yellow);// arka Plana Renk Veriyoruz..
@@ -301,8 +304,9 @@ public class NamazVakti extends JFrame
    
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("HH:mm");
-         kayitli = "Vakte kalan: "+(ft.format(dNow));
- 
+        long kalansure = ft.parse(parts[4]).getTime()-ft.parse(ft.format(dNow)).getTime();
+        kayitli = "Vakte kalan: "+("").format("%02d",kalansure/3600000)+":"+("").format("%02d",kalansure/60000);
+
       
  
         goster=new JButton(kayitli);// buton
