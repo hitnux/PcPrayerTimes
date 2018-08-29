@@ -304,11 +304,18 @@ public class NamazVakti extends JFrame
    
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("HH:mm");
-        long kalansure = ft.parse(parts[4]).getTime()-ft.parse(ft.format(dNow)).getTime();
+        long nowTime=ft.parse(ft.format(dNow)).getTime();
+        System.out.println(nowTime);
+        long kalansure=0;
+        for(int i=2;parts.length>i;i++){
+            if(ft.parse(parts[i]).getTime()>nowTime){
+                System.out.println(ft.parse(parts[i]).getTime());
+                kalansure = ft.parse(parts[4]).getTime()-nowTime;
+                break;  
+            }
+        }
         kayitli = "Vakte kalan: "+("").format("%02d",kalansure/3600000)+":"+("").format("%02d",kalansure/60000);
 
-      
- 
         goster=new JButton(kayitli);// buton
         goster.setBounds(0, 0, 200, 70);
         goster.setBackground(Color.white);//renk
