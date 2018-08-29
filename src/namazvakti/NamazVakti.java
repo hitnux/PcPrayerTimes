@@ -40,8 +40,7 @@ import javax.swing.JPanel;//panel nesnesi oluşturabilmemiz için içe aktarmam�
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
-public class NamazVakti extends JFrame
-{
+public class NamazVakti extends JFrame{
     JFrame frame,frame_home,frame_gizle;
     JDialog f;
     JPanel panel,panel_home,panel_gizle;
@@ -58,49 +57,41 @@ public class NamazVakti extends JFrame
     String[] parts=new String[145];
    
    
-   public boolean getTime(String il) throws IOException{
-       String url="https://www.sabah.com.tr/"+Convert(il.toLowerCase()+"-namaz-vakitleri");
-       Document doc=(Document) Jsoup.connect(url).get();
-       
-       e1=doc.select("td");
-      
-           System.out.println("İl:"+secilenil+" Vakitler çekildi: "+e1.text().toString());
-           String str = secilenil+" "+e1.text();
-
+    public boolean getTime(String il) throws IOException{
+        String url="https://www.sabah.com.tr/"+Convert(il.toLowerCase()+"-namaz-vakitleri");
+        Document doc=(Document) Jsoup.connect(url).get();
+        e1=doc.select("td");
+        System.out.println("İl:"+secilenil+" Vakitler çekildi: "+e1.text().toString());
+        String str = secilenil+" "+e1.text();
         File file = new File("dosya.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
-
         FileWriter fileWriter = new FileWriter(file, false);
         BufferedWriter bWriter = new BufferedWriter(fileWriter);
         bWriter.write(str);
         bWriter.close();
-           if(e1.text()!=""){
-               return true;
-           }
-           else{
-               return false;
-           }
-          
-   }
-   String secilenil=parts[0];
+        if(e1.text()!=""){
+            return true;
+        }else{
+            return false;
+        }  
+    }
+    String secilenil=parts[0];
     public void sehirsec(){
         frame=new JFrame("Şehir Seç");
         // Paneli oluşturuyorum
         panel= new JPanel();
         panel.setLayout(null);
-        
         //nesleri oluşturuyorum
         ImageIcon imgicon = new ImageIcon(iconPath);
         sec_il = new JComboBox(illiste);//.toArray());
         sec_il.setBounds(20, 20, 300, 30);
         sec_il.addActionListener (new ActionListener () {
-    public void actionPerformed(ActionEvent e) {
-        secilenil = String.valueOf(sec_il.getSelectedItem());
-    }
-});
-        
+            public void actionPerformed(ActionEvent e) {
+                secilenil = String.valueOf(sec_il.getSelectedItem());
+            }
+        });
         panel.add(sec_il);
         vakital=new JButton("Vakitleri Al");// buton
         vakital.setBounds(180, 70, 100, 50);
@@ -110,24 +101,17 @@ public class NamazVakti extends JFrame
         yenile.setBounds(60, 70, 100, 50);
         yenile.setBackground(Color.white);//renk
         panel.add(yenile);
-        
-         //paneli Frame e ekliyorum
+        //paneli Frame e ekliyorum
         frame.add(panel); //---&gt;&gt;&gt;frame.add(panel) ile aynı anlamı taşır
         frame.setBounds(770, 400, 350, 200);
         frame.setVisible(true);
         frame.setResizable(false);//sabit boyutlar
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setIconImage(imgicon.getImage());
-        
-
-       
-        vakital.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                try {
+        vakital.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
                     if(getTime(secilenil)){
-                        
                         System.out.println(secilenil);
                         vakitcek=true;
                         CloseFrame();
@@ -135,21 +119,19 @@ public class NamazVakti extends JFrame
                         frame.dispose();
                         anasayfa();
                     }
-                } catch (IOException ex) {
+                }catch (IOException ex) {
                     Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        yenile.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        yenile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 frame.dispose();
-               sehirsec();
+                sehirsec();
             }
         });
-   }
-     public void anasayfa() throws FileNotFoundException, IOException{
+    }
+    public void anasayfa() throws FileNotFoundException, IOException{
         frame_home=new JFrame("Namaz Vakitleri");
         // Paneli oluşturuyorum
         panel_home = new JPanel();
@@ -182,8 +164,6 @@ public class NamazVakti extends JFrame
         yatsi=new JLabel(yats);
         yatsi.setBounds(20, 190, 100, 50);
         panel_home.add(yatsi);
-        
-        
         //nesleri oluşturuyorum
         ImageIcon imgicon = new ImageIcon(iconPath);
         sehirsec=new JButton("Şehir Seç");// buton
@@ -202,16 +182,14 @@ public class NamazVakti extends JFrame
         sec.add(guncelle);
         JMenuItem exit = new JMenuItem("Çıkış");
         sec.add(exit);
-        
-       if(vakitcek){
+        if(vakitcek){
             frame_home.dispose();
             /*veriler.removeAll();
             kayitli=parts[0]+"\nTarih: "+parts[1]+"\nİmsak: "+parts[2]+"\n Güneş: "+parts[3]+"\nÖğle: "+parts[4]+"\nİkindi: "+parts[5]+"\nAkşam: "+parts[6]+"\nYatsı: "+parts[7];
             veriler=new JLabel(kayitli);*/
             frame_home.repaint();//frame yenileme
             frame_home.revalidate();//frame yenileme
-       }
-        
+        }
         panel_home.add(menu);
          //paneli Frame e ekliyorum
         frame_home.add(panel_home); //---&gt;&gt;&gt;frame.add(panel) ile aynı anlamı taşır
@@ -221,39 +199,29 @@ public class NamazVakti extends JFrame
         frame_home.setIconImage(imgicon.getImage());
         frame_home.setResizable(false);
         frame_home.addWindowListener(new WindowAdapter() {
-   public void windowClosing(WindowEvent evt) {
-       frame_home.dispose();
-       try {
-           gizle();
-       } catch (IOException ex) {
-           Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
-       } catch (ParseException ex) {
-           Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
-       }
-   }
-  });
-        
-
-       
-        sehirsec.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+            public void windowClosing(WindowEvent evt) {
+                frame_home.dispose();
+                try {
+                   gizle();
+                } catch (IOException ex) {
+                   Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                   Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        sehirsec.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 sehirsec();
             }
         });
-       
-        r1.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        r1.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 sehirsec();
             }
         });
-        guncelle.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        guncelle.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 String deger="";
                 if(parts[0]!=""){
                     deger=parts[0];
@@ -265,43 +233,30 @@ public class NamazVakti extends JFrame
                     } catch (IOException ex) {
                         Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
                 }
                 else {sehirsec();}
-               
-               
             }
         });
-        exit.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        exit.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 System.exit(0);
             }
         });
-           
-           if(il.equals(""))
-        sehirsec();
-            
-   }
-     public void CloseFrame(){
-    frame_home.dispose();
-}
+        if(il.equals("")) sehirsec();   
+    }
+    public void CloseFrame(){
+        frame_home.dispose();
+    }
      
-     public void gizle() throws IOException, ParseException{
-       f = new JDialog();//taskbarda icon göstermemek için dialog
+    public void gizle() throws IOException, ParseException{
+        f = new JDialog();//taskbarda icon göstermemek için dialog
         ImageIcon imgicon = new ImageIcon(iconPath);
-  f.getContentPane().setBackground(Color.yellow);// arka Plana Renk Veriyoruz..
-
-  
-  f.setSize(170, 50);
-  f.setUndecorated(true);//Oluşturduğumuz pencerenin kenarlıklarını 
-          //ve büyütme küçültme düğmeleriyle kapatmak için yazdık
-
-  f.setOpacity(0.7f);//pencerenin Şeffeflığını 0-1 arasında float olarak değiştirebiliriz.
-  String kayitli="Boş";
-  
-   
+        f.getContentPane().setBackground(Color.yellow);// arka Plana Renk Veriyoruz..
+        f.setSize(170, 50);
+        f.setUndecorated(true);//Oluşturduğumuz pencerenin kenarlıklarını 
+                //ve büyütme küçültme düğmeleriyle kapatmak için yazdık
+        f.setOpacity(0.7f);//pencerenin Şeffeflığını 0-1 arasında float olarak değiştirebiliriz.
+        String kayitli="Boş";
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("HH:mm");
         long nowTime=ft.parse(ft.format(dNow)).getTime();
@@ -315,47 +270,37 @@ public class NamazVakti extends JFrame
             }
         }
         kayitli = "Vakte kalan: "+("").format("%02d",kalansure/3600000)+":"+("").format("%02d",kalansure/60000);
-
         goster=new JButton(kayitli);// buton
         goster.setBounds(0, 0, 200, 70);
         goster.setBackground(Color.white);//renk
-        goster.setForeground(Color.black);
-       
-        
-       
-
-        
-  f.getContentPane().add(goster);
-  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-  GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-            Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-  int x = (int) rect.getMaxX() - f.getWidth();
+        goster.setForeground(Color.black);   
+        f.getContentPane().add(goster);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+        int x = (int) rect.getMaxX() - f.getWidth();
         int y = (int) rect.getMaxY() - f.getHeight()-50;
-  f.setLocation(x, y);//Penceremizin ekranda açılmasını istediğimiz yeri koordinantlarla belirliyoruz..
-  f.setDefaultCloseOperation(f.DO_NOTHING_ON_CLOSE);
-  f.setAlwaysOnTop (true);
-  f.setUndecorated(true);
-  f.setIconImage(imgicon.getImage());
-  f.setVisible(true);
+        f.setLocation(x, y);//Penceremizin ekranda açılmasını istediğimiz yeri koordinantlarla belirliyoruz..
+        f.setDefaultCloseOperation(f.DO_NOTHING_ON_CLOSE);
+        f.setAlwaysOnTop (true);
+        f.setUndecorated(true);
+        f.setIconImage(imgicon.getImage());
+        f.setVisible(true);
+        f.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
 
- 
-  f.addWindowListener(new WindowAdapter() {
-   public void windowClosing(WindowEvent evt) {
-       
-    f.dispose();
-       try {
-           anasayfa();
-       } catch (FileNotFoundException ex) {
-           Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
-       } catch (IOException ex) {
-           Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
-       }
-   }
-  });
-  goster.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+              f.dispose();
+                 try {
+                     anasayfa();
+                 } catch (FileNotFoundException ex) {
+                     Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
+                 } catch (IOException ex) {
+                     Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+        });
+        goster.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
                 f.dispose();
                 try {
                     anasayfa();
@@ -365,72 +310,47 @@ public class NamazVakti extends JFrame
                     Logger.getLogger(NamazVakti.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });
-        
-        
-     }
-     
-    public String Convert(String kelimecik) 
-{ 
-kelimecik = kelimecik.replace('ö', 'o'); 
-kelimecik = kelimecik.replace('ü', 'u'); 
-kelimecik = kelimecik.replace('ğ', 'g'); 
-kelimecik = kelimecik.replace('ş', 's'); 
-kelimecik = kelimecik.replace('ı', 'i'); 
-kelimecik = kelimecik.replace('ç', 'c'); 
-kelimecik = kelimecik.replace('Ö', 'O'); 
-kelimecik = kelimecik.replace('Ü', 'U'); 
-kelimecik = kelimecik.replace('Ğ', 'G'); 
-kelimecik = kelimecik.replace('Ş', 'S'); 
-kelimecik = kelimecik.replace('İ', 'I'); 
-kelimecik = kelimecik.replace('Ç', 'C'); 
-
-return kelimecik; 
-}
- 
-  
-    public static void main(String[] args) throws IOException {
-       NamazVakti sehirsec=new NamazVakti();
-       
-       
-     Runnable r = new Runnable() {
-         public void run() {
-           
-         }
-     };
-     ExecutorService executor = Executors.newCachedThreadPool();
-     executor.submit(r);
-       
-      sehirsec.oku();
-      sehirsec.anasayfa();
+        }); 
     }
-    
-   public boolean oku() throws FileNotFoundException, IOException{
-       File file = new File("dosya.txt");
+    public String Convert(String kelimecik){ 
+        kelimecik = kelimecik.replace('ö', 'o'); 
+        kelimecik = kelimecik.replace('ü', 'u'); 
+        kelimecik = kelimecik.replace('ğ', 'g'); 
+        kelimecik = kelimecik.replace('ş', 's'); 
+        kelimecik = kelimecik.replace('ı', 'i'); 
+        kelimecik = kelimecik.replace('ç', 'c'); 
+        kelimecik = kelimecik.replace('Ö', 'O'); 
+        kelimecik = kelimecik.replace('Ü', 'U'); 
+        kelimecik = kelimecik.replace('Ğ', 'G'); 
+        kelimecik = kelimecik.replace('Ş', 'S'); 
+        kelimecik = kelimecik.replace('İ', 'I'); 
+        kelimecik = kelimecik.replace('Ç', 'C'); 
+        return kelimecik; 
+    } 
+    public static void main(String[] args) throws IOException {
+        NamazVakti sehirsec=new NamazVakti();
+        Runnable r = new Runnable() {
+            public void run() {}
+        };
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(r);
+        sehirsec.oku();
+        sehirsec.anasayfa();
+    }
+    public boolean oku() throws FileNotFoundException, IOException{
+        File file = new File("dosya.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
-       FileReader fileReader = new FileReader(file);
-String line="boş1";
-
-BufferedReader br = new BufferedReader(fileReader);
-
-        
-            while ((line = br.readLine()) != null) {
-                
-                System.out.println("Okunan veri: "+line);
-                parts= line.split(" ");//parçalıyoruz
-                return true;
-            }
-
-        
-            br.close();
+        FileReader fileReader = new FileReader(file);
+        String line="boş1";
+        BufferedReader br = new BufferedReader(fileReader);
+        while ((line = br.readLine()) != null) {  
+            System.out.println("Okunan veri: "+line);
+            parts= line.split(" ");//parçalıyoruz
+            return true;
+        }       
+        br.close();
         return false;
-        
-
-   }
-    
-  
+    }
 }
-
-    
